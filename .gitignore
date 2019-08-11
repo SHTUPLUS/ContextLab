@@ -5,6 +5,9 @@ __pycache__/
 
 # C extensions
 *.so
+# User added
+*.DS_Store
+.vscode/
 
 # Distribution / packaging
 .Python
