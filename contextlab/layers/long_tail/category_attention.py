@@ -4,7 +4,7 @@
 @Email: sy.zhangbuaa@gmail.com
 @Date: 2019-08-11 13:40:08
 @LastEditors: Songyang Zhang
-@LastEditTime: 2019-08-12 15:11:01
+@LastEditTime: 2019-08-13 17:47:59
 '''
 import torch
 from torch import nn
@@ -128,9 +128,6 @@ class CategoryAttentionNetwork(nn.Module):
 
         return enhanced_feature
 
-class CategorayGCN(nn.Module):
-    """Build Category Graph for 
-    """
         
 class GraphConvNetwork(nn.Module):
 
@@ -140,7 +137,7 @@ class GraphConvNetwork(nn.Module):
     output_mode='BCN', 
     adj_pair_func='embedded_gaussian', 
     adj_channel_stride=1):
-        super(GraphConvNetwork, self).__init__
+        super(GraphConvNetwork, self).__init__()
 
         self.graph_conv = ConvBNReLU(
             in_channels=in_channels,
@@ -155,27 +152,28 @@ class GraphConvNetwork(nn.Module):
             channel_stride=adj_channel_stride,
 
         )
+        self.output_mode = output_mode
         # self.adj_generator = builder.build_adj_generator(adj_cfg)
 
     def forward(self, x):
+
         if len(x.size()) == 3:
             B, C, N = x.size()
             x_nodes = x.permute(0, 2, 1)
         elif len(x.size()) == 4:
             B, C, H, W = x.size()
             x_nodes = x.view(B, C, W*H).permute(0, 2, 1)
-
         # B, N, N
         graph_adj = self.adj_generator(x_nodes)
         # (B, N, N)*(B, N, C) --> (B, N, C)
         updated_feature = torch.bmm(graph_adj, x_nodes)
         # (B,N,C) -> (B,C,N,1)->(B,C_out,N,1)
         output_feature = self.graph_conv(
-            updated_feature.permute(2, 1).unsqueeze(-1))
+            updated_feature.permute(0, 2, 1).unsqueeze(-1))
 
-        if self.mode == 'BCN':
+        if self.output_mode == 'BCN':
             return output_feature.squeeze(-1)  # B, C, N
-        elif self.mode == 'BCHW':
+        elif self.output_mode == 'BCHW':
             return output_feature.view(B, -1, H, W)
 
         return output_feature

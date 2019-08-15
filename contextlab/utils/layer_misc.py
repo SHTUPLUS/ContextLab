@@ -56,13 +56,15 @@ class GraphAdjNetwork(nn.Module):
                 out_channels=inter_channel,
                 kernel_size=1,
                 bias=False,
-                norm_layer=nn.BatchNorm2d)
+                norm_layer=nn.BatchNorm2d
+                )
             self.theta = ConvBNReLU(
                 in_channels=in_channels,
                 out_channels=inter_channel,
                 kernel_size=1,
                 bias=False,
-                norm_layer=nn.BatchNorm2d)
+                norm_layer=nn.BatchNorm2d
+                )
         elif pair_function == 'gaussian':
             pass
         elif pair_function == 'diff_learnable':
@@ -71,21 +73,24 @@ class GraphAdjNetwork(nn.Module):
                 out_channels=1,
                 kernel_size=1,
                 bias=False,
-                norm_layer=nn.BatchNorm2d)
+                norm_layer=nn.BatchNorm2d
+                )
         elif pair_function == 'sum_learnable':
             self.learnable_adj_conv = ConvBNReLU(
                 in_channels=in_channels,
                 out_channels=1,
                 kernel_size=1,
                 bias=False,
-                norm_layer=nn.BatchNorm2d)
+                norm_layer=nn.BatchNorm2d
+                )
         elif pair_function == 'cat_learnable':
             self.learnable_adj_conv = ConvBNReLU(
                 in_channels=in_channels*2,
                 out_channels=1,
                 kernel_size=1,
                 bias=False,
-                norm_layer=nn.BatchNorm2d)
+                norm_layer=nn.BatchNorm2d
+                )
         else:
             raise NotImplementedError
 
@@ -102,7 +107,7 @@ class GraphAdjNetwork(nn.Module):
             x_1 = self.phi(x)  # B, C, N, 1
             x_2 = self.theta(x)  # B, C, N, 1
             adj = self.gaussian(
-                x_1.squeeze(-1), x_2.squeeze(-1).permute(0, 2, 1))
+                x_1.squeeze(-1).permute(0, 2, 1), x_2.squeeze(-1))
         elif self.pair_function == 'diff_learnable':
             adj = self.diff_learnable_adj(x.unsqueeze(2), x.unsqueeze(1))
         elif self.pair_function == 'sum_learnable':
