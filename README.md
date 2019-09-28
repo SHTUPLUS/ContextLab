@@ -49,10 +49,31 @@ v0.1.0 (26/07/2019)
 
 ## Installation
 
-Please refer to [Install.md](INSTALL.md) for installation and dataset preparation.
+```
+git clone https://github.com/SHTUPLUS/contextlab.git
+cd contextlab/
+python setup.py build develop
+```
 
-## Get Started
-Please see [GETTING_STARTED.md](GETTING_STARTED.md) for the basic usage of **ContextLab**.
+## Exapmles
+```python
+# GCNet
+from contextlab.layers import GlobalContextBlock2d
+# Dual-Attention
+from contextlab.layers import SelfAttention
+# LatentGNN
+from contextlab.layers import LatentGNN
+# TreeFilter
+from contextlab.layers import MinimumSpanningTree, TreeFilter2D
+# CCNet
+from contextlab.layers import CrissCrossAttention
+# EMAttetnion
+from contextlab.layers import EMAttentionUnit
+```
+
+## To do
+- [ ] Experiments on Segmentation and Detection
+- [ ] Performance Comparison
 
 ## Contributing
 
@@ -64,7 +85,16 @@ ContextLab is an open source project that is contributed by researchers and engi
 We wish that the toolbox and benchmark could serve the growing research community by providing a flexible toolkit to reimplement existing methods and develop their own new segmentation methods.
 
 ## Citation
-
+```
+@misc{contextlab,
+  title   = {{ContextLab}: A Toolbox for Context Feature Augmentation},
+  author  = {Songyang Zhang},
+  year={2019}
+}
+```
 ## Contact
+```
+email: sy.zhangbuaa@gmail.com
+```
 
 ## Misc.
