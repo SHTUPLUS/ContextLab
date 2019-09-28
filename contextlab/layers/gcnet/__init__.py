@@ -1,1 +1,1 @@
-from .gcnet import ContextBlock2d
+from .gcnet import GlobalContextBlock2d

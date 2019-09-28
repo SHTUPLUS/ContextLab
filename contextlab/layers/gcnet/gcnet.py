@@ -4,13 +4,13 @@
 @Email: sy.zhangbuaa@gmail.com
 @Date: 2019-08-15 10:20:38
 @LastEditors: Songyang Zhang
-@LastEditTime: 2019-08-15 10:20:51
+@LastEditTime: 2019-09-27 18:40:35
 '''
 
 import torch
 from torch import nn
 # from mmcv.cnn import constant_init, kaiming_init
-from utils.weight_init import constant_init, kaiming_init
+from contextlab.utils.weight_init import constant_init, kaiming_init
 
 def last_zero_init(m):
     if isinstance(m, nn.Sequential):
@@ -21,10 +21,10 @@ def last_zero_init(m):
         m.inited = True
 
 
-class ContextBlock2d(nn.Module):
+class GlobalContextBlock2d(nn.Module):
 
     def __init__(self, inplanes, stride, pool, fusions):
-        super(ContextBlock2d, self).__init__()
+        super(GlobalContextBlock2d, self).__init__()
         assert pool in ['avg', 'att']
         assert all([f in ['channel_add', 'channel_mul'] for f in fusions])
         assert len(fusions) > 0, 'at least one fusion should be used'

@@ -4,7 +4,7 @@
 @Email: sy.zhangbuaa@gmail.com
 @Date: 2019-08-11 12:30:28
 @LastEditors: Songyang Zhang
-@LastEditTime: 2019-09-25 20:04:53
+@LastEditTime: 2019-09-27 19:58:41
 '''
 
 import glob
@@ -26,6 +26,8 @@ from setuptools import Extension, find_packages, setup
 
 from Cython.Build import cythonize
 
+from torch.utils.cpp_extension import BuildExtension, CUDAExtension
+
 requirements = ['torch']
 
 def readme():
@@ -35,9 +37,16 @@ def readme():
 
 version_file = 'contextlab/version.py'
 
+if torch.cuda.is_available():
+    if 'LD_LIBRARY_PATH' not in os.environ:
+            raise Exception('LD_LIBRARY_PATH is not set.')
+    cuda_lib_path = os.environ['LD_LIBRARY_PATH'].split(':')
+else:
+    raise Exception('This implementation is only avaliable for CUDA devices.')
+
 
 MAJOR = 0
-MINOR = 1
+MINOR = 2
 PATCH = 0
 SUFFIX = ''
 SHORT_VERSION = '{}.{}.{}{}'.format(MAJOR, MINOR, PATCH, SUFFIX)
@@ -101,10 +110,43 @@ def get_version():
     
     return locals()['__version__']
 
+
+def make_cuda_ext(name, module, sources, include_dirs=[]):
+
+  
+    return CUDAExtension(
+        name='{}.{}'.format(module, name),
+        sources=[os.path.join(*module.split('.'), p) for p in sources],
+        include_dirs=include_dirs,
+        library_dirs=cuda_lib_path,
+        extra_compile_args={
+            'cxx': ['-O3'],
+            'nvcc': [
+                '-O3',
+                # '-D__CUDA_NO_HALF_OPERATORS__',
+                # '-D__CUDA_NO_HALF_CONVERSIONS__',
+                # '-D__CUDA_NO_HALF2_OPERATORS__',
+            ]
+        })
+
+
+def tree_filter_files():
+
+    extensions_dir = 'contextlab/layers/tree_filter/src'
+    main_file = glob.glob(os.path.join(extensions_dir, "*.cpp"))
+    source_cpu = glob.glob(os.path.join(extensions_dir, "*", "*.cpp"))
+    source_cuda = glob.glob(os.path.join(extensions_dir, "*", "*.cu"))
+    
+    sources = source_cpu + source_cuda + main_file
+    
+    return extensions_dir, sources
+
 if __name__ == "__main__":
     
     write_version_py()
 
+    tree_extensions_dir, tree_sources = tree_filter_files()
+    
     setup(        
         name='contextlab',
         version=get_version(),
@@ -115,6 +157,31 @@ if __name__ == "__main__":
         packages=find_packages(exclude=("src",)),
         license='Apache License 2.0',
         install_requires=requirements,
-        ext_modules=[],
+        ext_modules=[
+            # make_cuda_ext(
+            #     name='tree_filter_cuda',
+            #     module='contextlab.layers.tree_filter',
+            #     include_dirs=[tree_extensions_dir],
+            #     sources=tree_sources),
+            CUDAExtension(
+                name='contextlab.layers.tree_filter.functions.tree_filter_cuda',
+                # module='contextlab.layers.tree_filter',
+                include_dirs=[tree_extensions_dir],
+                sources=tree_sources,
+                library_dirs=cuda_lib_path,
+                extra_compile_args={'cxx':['-O3'],
+                                    'nvcc':['-O3']}),
+            CUDAExtension(
+                name='contextlab.layers.cc_attention.rcca',
+                sources=['contextlab/layers/cc_attention/src/lib_cffi.cpp',
+                         'contextlab/layers/cc_attention/src/ca.cu'],
+                extra_compile_args= ['-std=c++11'],
+                extra_cflags=["-O3"],
+                extra_cuda_cflags=["--expt-extended-lambda"],
+            )
+        ],
+        cmdclass={
+        'build_ext': BuildExtension
+        },
         zip_safe=False
     )

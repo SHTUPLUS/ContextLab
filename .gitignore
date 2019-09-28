@@ -9,6 +9,7 @@ version.py
 # User added
 *.DS_Store
 .vscode/
+github/
 
 # Distribution / packaging
 .Python

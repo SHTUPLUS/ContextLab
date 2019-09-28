@@ -16,37 +16,36 @@ ContextLab is an open source context feature augmentation toolbox based on PyTor
 ## Major Features
 - **Modular Design**
 
-- **Multiple Frameworks**
-
 - **High Efficiency**
 
 - **State-of-the-art Performance**
 
-We have implemented several semantic segmentation algorithms in PyTorch with comparable performance
-Code will be updated in Oct.
+We have implemented several context augmentation algorithms in PyTorch with comparable performance.
 
 ## License
 This project is released under the [MIT License](LICENSE)
 
 ## Updates
 
+V0.2.0 (27/09/2019)
+- Support for **CCNet**, **TreeFilter** and **EMANet**
 v0.1.0 (26/07/2019)
 - Start the project
 
-## Benchmark and Model Zoo
-Supported methods and backbones are shown in the below table
-Results and models are available in the [Model Zoo](MODEL_ZOO.md)
 
-|                    | Spatial   | ResNeXt  | DenseNet | HRNet |
-|--------------------|:--------:|:--------:|:--------:|:-----:|
-| Non-local Network  | ✓        | ✓        | ☐        |  ✓     |
-| LatentGNN          | ✓        | ✓        | ☐        |  ✓     |
-| Dual-attention     | ✓        | ✓        | ☐        |  ✓     |
-| GCNet              | ✓        | ✓        | ☐        |  ✓     |
-| CCNet              | ✓        | ✓        | ☐        |  ✓     |
-| AANet              | ✓        | ✓        | ☐        |  ✓     |
-| GloRe              | ✗        | ✗        | ✗        |  ✗     |
-| Beyond Grid        | ✓        | ✓        | ☐        |  ✓     |
+## Benchmark and Model Zoo
+<!-- Supported methods and backbones are shown in the below table -->
+<!-- Results and models are available in the [Model Zoo](MODEL_ZOO.md) -->
+
+|   Method           | Block-wise   | Stage-wise  | Paper    |
+|--------------------|:------------:|:-----------:|:--------:| 
+| Non-local Network  | ✗            | ✓           | [CVPR 18](https://arxiv.org/abs/1711.07971)
+| Dual-attention     | ✗            | ✓           | [CVPR 19](https://arxiv.org/abs/1809.02983)
+| GCNet              | ✗            | ✓           | [Arxiv  ](https://arxiv.org/abs/1904.11492)
+| CCNet              | ✓            | ✓           | [ICCV 19](https://arxiv.org/abs/1811.11721)
+| LatentGNN          | ✗            | ✓           | [ICML 19](https://arxiv.org/abs/1905.11634)
+| TreeFilter         | ✗            | ✓           | [NIPS 19]()
+| EMANet             | ✗            | ✓           | [ICCV 19](https://arxiv.org/abs/1907.13426)
 
 ## Installation
 
