@@ -29,6 +29,7 @@ This project is released under the [MIT License](LICENSE)
 
 V0.2.0 (27/09/2019)
 - Support for **CCNet**, **TreeFilter** and **EMANet**
+
 v0.1.0 (26/07/2019)
 - Start the project
 
@@ -97,4 +98,18 @@ We wish that the toolbox and benchmark could serve the growing research communit
 email: sy.zhangbuaa@gmail.com
 ```
 
-## Misc.
+## Related Projects
+- [Non-local Network(CVPR 18)](https://arxiv.org/abs/1711.07971)
+    - [Video Classification(Caffe)](https://github.com/facebookresearch/video-nonlocal-net)
+- [Dual-attentio(CVPR 19)](https://arxiv.org/abs/1809.02983)
+    - [Semantic Segmentation(PyTorch)](https://github.com/junfu1115/DANet)
+- [GCNet (Arxiv)](https://arxiv.org/abs/1904.11492)
+    - [Object Detection(PyTorch)](https://github.com/xvjiarui/GCNet)
+- [CCNet (ICCV 19)](https://arxiv.org/abs/1811.11721)
+    - [Semantic Segmentation(PyTorch)](https://github.com/speedinghzl/CCNet)
+- [LatentGNN (ICML 19)](https://arxiv.org/abs/1905.11634)
+    - [Object Detection(PyTorch)](https://github.com/latentgnn/LatentGNN-V1-PyTorch)
+- [TreeFilter (NIPS 19)]()
+    - [Semantic Segmentation(PyTorch)](https://github.com/StevenGrove/TreeFilter-Torch)
+- [EMANet (ICCV 19)](https://arxiv.org/abs/1907.13426)
+    - [Semantic Segmentation(PyTorch)](https://github.com/XiaLiPKU/EMANet)
